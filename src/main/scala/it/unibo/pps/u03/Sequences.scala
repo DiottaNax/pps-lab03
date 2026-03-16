@@ -198,6 +198,8 @@ object Sequences: // Essentially, generic linkedlists
 
       _foldLeft(s, default)
 
+    def countCourses(s: Sequence[Person]): Int = sum(map(getCourses(s))(_ => 1))
+
 @main def trySequences =
   import Sequences.*
   val l = Sequence.Cons(10, Sequence.Cons(20, Sequence.Cons(30, Sequence.Nil())))

@@ -7,6 +7,7 @@ import org.junit.Assert.*
 import u03.Optionals.Optional.{Empty, Just}
 
 class SequenceTest:
+
   import u03.Sequences.*
   import Sequence.*
 
@@ -94,10 +95,22 @@ class SequenceTest:
   @Test def testFoldLeft(): Unit =
     val lst = Cons(3, Cons(7, Cons(1, Cons(5, Nil()))))
     val default = 0
-    val expected = default -sum(lst)
-    assertEquals(expected, foldLeft(lst)(0)(_ - _))// -16
+    val expected = default - sum(lst)
+    assertEquals(expected, foldLeft(lst)(0)(_ - _)) // -16
 
-    val emptySequence = Nil()
-    val (evenEmpty, oddEmpty) = partition(emptySequence)(x => true)
-    assertEquals(Nil(), evenEmpty)
-    assertEquals(Nil(), oddEmpty)
+  @Test def testCountCourses(): Unit =
+    val student = Student("F. Diotallevi", 2026)
+    val viroli = Teacher("M. Viroli", "PPS")
+    val ricci = Teacher("A. Ricci", "PCD")
+    val bravetti = Teacher("M. Bravetti", "LCMC")
+    val courses = Cons("PPS", Cons("PCD", Cons("LCMC", Nil())))
+    val sequence = Cons(viroli, Cons(ricci, Cons(student, Cons(bravetti, Nil()))))
+    val totalCourses = 3
+    assertEquals(totalCourses, countCourses(sequence))
+
+  @Test def testCountCoursesReturn0WithEmptyList(): Unit = assertEquals(0, countCourses(Nil()))
+
+  val emptySequence = Nil()
+  val (evenEmpty, oddEmpty) = partition(emptySequence)(x => true)
+  assertEquals(Nil(), evenEmpty)
+  assertEquals(Nil(), oddEmpty)
