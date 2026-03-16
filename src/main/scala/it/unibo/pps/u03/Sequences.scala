@@ -1,6 +1,7 @@
 package u03
 
 import u03.Optionals.Optional
+import u03.Optionals.Optional.Just
 
 import scala.annotation.tailrec
 
@@ -143,7 +144,7 @@ object Sequences: // Essentially, generic linkedlists
         case Cons(h, t) if contains[A](acc)(h) => _distinct(t, acc)
         case Cons(h, t) => _distinct(t, Cons(h, acc))
       reverse(_distinct(s, Nil()))
-        
+
 
     /*
      * Group contiguous elements in the sequence
@@ -151,7 +152,15 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [10, 20, 30] => [[10], [20], [30]]
      * E.g., [10, 20, 20, 30] => [[10], [20, 20], [30]]
      */
-    def group[A](s: Sequence[A]): Sequence[Sequence[A]] = ???
+    def group[A](s: Sequence[A]): Sequence[Sequence[A]] =
+      @tailrec
+      def _group(s: Sequence[A], acc: Sequence[Sequence[A]]): Sequence[Sequence[A]] = s match
+        case Nil() => acc
+        case Cons(h, t) => acc match
+          case Cons(Cons(firstGroupH, firstGroupT), otherGroups) if firstGroupH == h =>
+            _group(t, Cons(Cons(h,Cons(h, firstGroupT)), otherGroups))
+          case Nil() | Cons(_, _) => _group(t, Cons(Cons(h, Nil()), acc))
+        reverse(_group(s, Nil()))
 
     /*
      * Partition the sequence into two sequences based on the predicate
