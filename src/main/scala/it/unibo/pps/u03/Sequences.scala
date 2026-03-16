@@ -154,7 +154,7 @@ object Sequences: // Essentially, generic linkedlists
     def group[A](s: Sequence[A]): Sequence[Sequence[A]] =
       @tailrec
       def _group(s: Sequence[A], firstGroup: Sequence[A], acc: Sequence[Sequence[A]]): Sequence[Sequence[A]] = s match
-        case Nil() => { if(firstGroup == Nil()) acc else Cons(firstGroup, acc) }
+        case Nil() => if(firstGroup == Nil()) acc else Cons(firstGroup, acc)
         case Cons(h, t) => firstGroup match
           case Cons(firstH, firstT) if firstH == h => _group(t, Cons(h, Cons(h, firstT)), acc)
           case Cons(_, _) => _group(t, Cons(h, Nil()), Cons(firstGroup, acc))
