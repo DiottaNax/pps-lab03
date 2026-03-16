@@ -145,7 +145,6 @@ object Sequences: // Essentially, generic linkedlists
         case Cons(h, t) => _distinct(t, Cons(h, acc))
       reverse(_distinct(s, Nil()))
 
-
     /*
      * Group contiguous elements in the sequence
      * E.g., [10, 10, 20, 30] => [[10, 10], [20], [30]]
@@ -154,13 +153,13 @@ object Sequences: // Essentially, generic linkedlists
      */
     def group[A](s: Sequence[A]): Sequence[Sequence[A]] =
       @tailrec
-      def _group(s: Sequence[A], acc: Sequence[Sequence[A]]): Sequence[Sequence[A]] = s match
-        case Nil() => acc
-        case Cons(h, t) => acc match
-          case Cons(Cons(firstGroupH, firstGroupT), otherGroups) if firstGroupH == h =>
-            _group(t, Cons(Cons(h,Cons(h, firstGroupT)), otherGroups))
-          case Nil() | Cons(_, _) => _group(t, Cons(Cons(h, Nil()), acc))
-      reverse(_group(s, Nil()))
+      def _group(s: Sequence[A], firstGroup: Sequence[A], acc: Sequence[Sequence[A]]): Sequence[Sequence[A]] = s match
+        case Nil() => { if(firstGroup == Nil()) acc else Cons(firstGroup, acc) }
+        case Cons(h, t) => firstGroup match
+          case Cons(firstH, firstT) if firstH == h => _group(t, Cons(h, Cons(h, firstT)), acc)
+          case Cons(_, _) => _group(t, Cons(h, Nil()), Cons(firstGroup, acc))
+          case Nil() => _group(t, Cons(h, Nil()), acc)
+      reverse(_group(s, Nil(), Nil()))
 
     /*
      * Partition the sequence into two sequences based on the predicate
