@@ -160,7 +160,7 @@ object Sequences: // Essentially, generic linkedlists
           case Cons(Cons(firstGroupH, firstGroupT), otherGroups) if firstGroupH == h =>
             _group(t, Cons(Cons(h,Cons(h, firstGroupT)), otherGroups))
           case Nil() | Cons(_, _) => _group(t, Cons(Cons(h, Nil()), acc))
-        reverse(_group(s, Nil()))
+      reverse(_group(s, Nil()))
 
     /*
      * Partition the sequence into two sequences based on the predicate
