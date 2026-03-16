@@ -1,12 +1,11 @@
 package u03
 
 import u03.Optionals.Optional
-import u03.Optionals.Optional.Just
 
 import scala.annotation.tailrec
 
 object Sequences: // Essentially, generic linkedlists
-  
+
   enum Sequence[E]:
     case Cons(head: E, tail: Sequence[E])
     case Nil()
@@ -15,16 +14,16 @@ object Sequences: // Essentially, generic linkedlists
 
     def sum(l: Sequence[Int]): Int = l match
       case Cons(h, t) => h + sum(t)
-      case _          => 0
+      case _ => 0
 
     def map[A, B](l: Sequence[A])(mapper: A => B): Sequence[B] = l match
       case Cons(h, t) => Cons(mapper(h), map(t)(mapper))
-      case Nil()      => Nil()
+      case Nil() => Nil()
 
     def filter[A](l1: Sequence[A])(pred: A => Boolean): Sequence[A] = l1 match
       case Cons(h, t) if pred(h) => Cons(h, filter(t)(pred))
-      case Cons(_, t)            => filter(t)(pred)
-      case Nil()                 => Nil()
+      case Cons(_, t) => filter(t)(pred)
+      case Nil() => Nil()
 
     // Lab 03
 
@@ -39,7 +38,7 @@ object Sequences: // Essentially, generic linkedlists
     def skip[A](s: Sequence[A])(n: Int): Sequence[A] = s match
       case Nil() => Nil()
       case Cons(h, t) if n == 0 => Cons(h, t)
-      case Cons(_, t)  => skip(t)(n - 1)
+      case Cons(_, t) => skip(t)(n - 1)
 
     /*
      * Zip two sequences
@@ -52,6 +51,7 @@ object Sequences: // Essentially, generic linkedlists
       def _zip(first: Sequence[A], second: Sequence[B], acc: Sequence[(A, B)]): Sequence[(A, B)] = (first, second) match
         case (Nil(), _) | (_, Nil()) => acc
         case (Cons(h1, t1), Cons(h2, t2)) => _zip(t1, t2, Cons((h1, h2), acc))
+
       reverse(_zip(first, second, Nil()))
 
     /*
@@ -65,6 +65,7 @@ object Sequences: // Essentially, generic linkedlists
       def prependReversed(s: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
         case Nil() => acc
         case Cons(h, t) => prependReversed(t, Cons(h, acc))
+
       val reversedS1 = reverse(s1)
       prependReversed(reversedS1, s2)
 
@@ -80,6 +81,7 @@ object Sequences: // Essentially, generic linkedlists
       def _reverse(current: Sequence[A], acc: Sequence[A]): Sequence[A] = current match
         case Nil() => acc
         case Cons(h, t) => _reverse(t, Cons(h, acc))
+
       _reverse(s, Nil())
 
     /*
@@ -93,6 +95,7 @@ object Sequences: // Essentially, generic linkedlists
       def _flatMap(current: Sequence[A], acc: Sequence[B]): Sequence[B] = current match
         case Nil() => acc
         case Cons(h, t) => _flatMap(t, concat(acc, mapper(h)))
+
       _flatMap(s, Nil())
 
     /*
@@ -106,6 +109,7 @@ object Sequences: // Essentially, generic linkedlists
         case Nil() => currentMin
         case Cons(h, t) if h < Optional.orElse(currentMin, Int.MaxValue) => _min(t, Optional.Just(h))
         case Cons(_, t) => _min(t, currentMin)
+
       _min(s, Optional.Empty())
 
     /*
@@ -118,6 +122,7 @@ object Sequences: // Essentially, generic linkedlists
       def _evenIndices(s: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
         case Nil() => acc
         case Cons(h, t) => _evenIndices(skip(t)(1), Cons(h, acc))
+
       reverse(_evenIndices(s, Nil()))
 
     /*
@@ -143,6 +148,7 @@ object Sequences: // Essentially, generic linkedlists
         case Nil() => acc
         case Cons(h, t) if contains[A](acc)(h) => _distinct(t, acc)
         case Cons(h, t) => _distinct(t, Cons(h, acc))
+
       reverse(_distinct(s, Nil()))
 
     /*
@@ -154,11 +160,12 @@ object Sequences: // Essentially, generic linkedlists
     def group[A](s: Sequence[A]): Sequence[Sequence[A]] =
       @tailrec
       def _group(s: Sequence[A], firstGroup: Sequence[A], acc: Sequence[Sequence[A]]): Sequence[Sequence[A]] = s match
-        case Nil() => if(firstGroup == Nil()) acc else Cons(firstGroup, acc)
+        case Nil() => if (firstGroup == Nil()) acc else Cons(firstGroup, acc)
         case Cons(h, t) => firstGroup match
           case Cons(firstH, firstT) if firstH == h => _group(t, Cons(h, Cons(h, firstT)), acc)
           case Cons(_, _) => _group(t, Cons(h, Nil()), Cons(firstGroup, acc))
           case Nil() => _group(t, Cons(h, Nil()), acc)
+
       reverse(_group(s, Nil(), Nil()))
 
     /*
@@ -168,15 +175,17 @@ object Sequences: // Essentially, generic linkedlists
      */
     def partition[A](s: Sequence[A])(pred: A => Boolean): (Sequence[A], Sequence[A]) =
       @tailrec
-      def _partition(s: Sequence[A], matching: Sequence[A], nonMatching: Sequence[A]): (Sequence[A], Sequence[A]) = s match
-        case Nil() => (matching, nonMatching)
-        case Cons(h, t) if pred(h) => _partition(t, Cons(h, matching), nonMatching)
-        case Cons(h, t) => _partition(t, matching, Cons(h, nonMatching))
+      def _partition(s: Sequence[A], matching: Sequence[A], nonMatching: Sequence[A]): (Sequence[A], Sequence[A]) =
+        s match
+          case Nil() => (matching, nonMatching)
+          case Cons(h, t) if pred(h) => _partition(t, Cons(h, matching), nonMatching)
+          case Cons(h, t) => _partition(t, matching, Cons(h, nonMatching))
+
       _partition(reverse(s), Nil(), Nil())
 
 
 @main def trySequences =
-  import Sequences.* 
+  import Sequences.*
   val l = Sequence.Cons(10, Sequence.Cons(20, Sequence.Cons(30, Sequence.Nil())))
   println(Sequence.sum(l)) // 30
 
