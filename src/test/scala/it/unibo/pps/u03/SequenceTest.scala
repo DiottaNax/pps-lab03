@@ -91,6 +91,12 @@ class SequenceTest:
     val sequence = Cons(viroli, Cons(ricci, Cons(student, Cons(bravetti, Nil()))))
     assertEquals(courses, getCourses(sequence))
 
+  @Test def testFoldLeft(): Unit =
+    val lst = Cons(3, Cons(7, Cons(1, Cons(5, Nil()))))
+    val default = 0
+    val expected = default -sum(lst)
+    assertEquals(expected, foldLeft(lst)(0)(_ - _))// -16
+
     val emptySequence = Nil()
     val (evenEmpty, oddEmpty) = partition(emptySequence)(x => true)
     assertEquals(Nil(), evenEmpty)

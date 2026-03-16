@@ -1,6 +1,6 @@
 package u03
 
-import it.unibo.pps.u02.Modules.{Person, isStudent}
+import it.unibo.pps.u02.Modules.Person
 import it.unibo.pps.u02.Modules.Person.Teacher
 import u03.Optionals.Optional
 
@@ -189,6 +189,14 @@ object Sequences: // Essentially, generic linkedlists
       case Teacher(_, c) => Cons(c, Nil())
       case _ => Nil()
     }
+
+    def foldLeft(s: Sequence[Int])(default: Int)(mapper: (Int, Int) => Int): Int =
+      @tailrec
+      def _foldLeft(s: Sequence[Int], acc: Int): Int = s match
+        case Nil() => acc
+        case Cons(h1, t) => _foldLeft(t, mapper(acc, h1))
+
+      _foldLeft(s, default)
 
 @main def trySequences =
   import Sequences.*
