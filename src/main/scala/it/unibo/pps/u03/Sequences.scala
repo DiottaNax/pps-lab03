@@ -87,10 +87,12 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [10, 20, 30], calling with mapper(v => [v]) returns [10, 20, 30]
      * E.g., [10, 20, 30], calling with mapper(v => Nil()) returns []
      */
-    def flatMap[A, B](s: Sequence[A])(mapper: A => Sequence[B]): Sequence[B] = s match
-      case Nil() => Nil()
-      case Cons(h, t) => concat(mapper(h), flatMap(t)(mapper))
-
+    def flatMap[A, B](s: Sequence[A])(mapper: A => Sequence[B]): Sequence[B] =
+      @tailrec
+      def _flatMap(current: Sequence[A], acc: Sequence[B]): Sequence[B] = current match
+        case Nil() => acc
+        case Cons(h, t) => _flatMap(t, concat(acc, mapper(h)))
+      _flatMap(s, Nil())
 
     /*
      * Get the minimum element in the sequence
