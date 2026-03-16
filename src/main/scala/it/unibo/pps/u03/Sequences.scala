@@ -69,9 +69,9 @@ object Sequences: // Essentially, generic linkedlists
      */
     def reverse[A](s: Sequence[A]): Sequence[A] =
       @tailrec
-      def _reverse(n: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
+      def _reverse(current: Sequence[A], acc: Sequence[A]): Sequence[A] = current match
         case Nil() => acc
-        case Cons(h, t) => _reverse(t, concat(acc, Cons(h, Nil())))
+        case Cons(h, t) => _reverse(t, Cons(h, acc))
       _reverse(s, Nil())
 
     /*
