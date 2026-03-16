@@ -1,5 +1,7 @@
 package it.unibo.pps.u03
 
+import it.unibo.pps.u02.Modules.Person
+import it.unibo.pps.u02.Modules.Person.{Student, Teacher}
 import org.junit.*
 import org.junit.Assert.*
 import u03.Optionals.Optional.{Empty, Just}
@@ -79,6 +81,15 @@ class SequenceTest:
     val (even, odd) = partition(sequence)(x => x % 2 == 0)
     assertEquals(Cons(20, Nil()), even)
     assertEquals(Cons(11, Cons(31, Nil())), odd)
+
+  @Test def testGetCourses() =
+    val student = Student("F. Diotallevi", 2026)
+    val viroli = Teacher("M. Viroli", "PPS")
+    val ricci = Teacher("A. Ricci", "PCD")
+    val bravetti = Teacher("M. Bravetti", "LCMC")
+    val courses = Cons("PPS", Cons("PCD", Cons("LCMC", Nil())))
+    val sequence = Cons(viroli, Cons(ricci, Cons(student, Cons(bravetti, Nil()))))
+    assertEquals(courses, getCourses(sequence))
 
     val emptySequence = Nil()
     val (evenEmpty, oddEmpty) = partition(emptySequence)(x => true)

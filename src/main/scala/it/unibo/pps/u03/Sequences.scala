@@ -1,5 +1,7 @@
 package u03
 
+import it.unibo.pps.u02.Modules.{Person, isStudent}
+import it.unibo.pps.u02.Modules.Person.Teacher
 import u03.Optionals.Optional
 
 import scala.annotation.tailrec
@@ -183,6 +185,10 @@ object Sequences: // Essentially, generic linkedlists
 
       _partition(reverse(s), Nil(), Nil())
 
+    def getCourses(s: Sequence[Person]): Sequence[String] = flatMap(s) {
+      case Teacher(_, c) => Cons(c, Nil())
+      case _ => Nil()
+    }
 
 @main def trySequences =
   import Sequences.*
