@@ -19,3 +19,9 @@ class StreamTest:
     val expected = Cons(element, Cons(element, Cons(element, Nil())))
     val actual = Stream.toList(Stream.fill(3)(element))
     assertEquals(expected, actual)
+
+  @Test def testFibonacci(): Unit =
+    val fibonacci: Stream[Int] = Stream.fibonacci()
+    val actual = Stream.toList(Stream.take(fibonacci)(5))
+    val expected = Cons(0, Cons(1, Cons(1, Cons(2, Cons(3, Nil())))))
+    assertEquals(expected, actual)

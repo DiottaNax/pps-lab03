@@ -43,6 +43,12 @@ object Streams extends App:
 
     def fill[A](n: Int)(element: A): Stream[A] = take(iterate(element)(_ => element))(n)
 
+    def fibonacci(): Stream[Int] =
+      def _fibonacci(current: Int)(next: Int): Stream[Int] =
+        cons(current, _fibonacci(next)(current + next))
+      _fibonacci(0)(1)
+
+
   end Stream
 
 @main def tryStreams =
