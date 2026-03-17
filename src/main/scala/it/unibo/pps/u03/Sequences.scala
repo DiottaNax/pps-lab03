@@ -64,12 +64,12 @@ object Sequences: // Essentially, generic linkedlists
      */
     def concat[A](s1: Sequence[A], s2: Sequence[A]): Sequence[A] =
       @tailrec
-      def prependReversed(s: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
+      def _prependReversed(s: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
         case Nil() => acc
-        case Cons(h, t) => prependReversed(t, Cons(h, acc))
+        case Cons(h, t) => _prependReversed(t, Cons(h, acc))
 
       val reversedS1 = reverse(s1)
-      prependReversed(reversedS1, s2)
+      _prependReversed(reversedS1, s2)
 
 
     /*
@@ -188,7 +188,7 @@ object Sequences: // Essentially, generic linkedlists
     def getCourses(s: Sequence[Person]): Sequence[String] = flatMap(s):
       case Teacher(_, c) => Cons(c, Nil())
       case _ => Nil()
-      
+
     def foldLeft(s: Sequence[Int])(default: Int)(mapper: (Int, Int) => Int): Int =
       @tailrec
       def _foldLeft(s: Sequence[Int], acc: Int): Int = s match
