@@ -1,0 +1,15 @@
+package it.unibo.pps.u03
+
+import org.junit.*
+import org.junit.Assert.*
+import u03.Sequences.Sequence.{Cons, Nil}
+
+class StreamTest:
+
+  import u03.Streams.Stream
+
+  @Test def testTakeWhile() =
+    val stream: Stream[Int] = Stream.iterate(0)(_ + 1)
+    val expected = Cons(0, Cons(1, Cons(2, Cons(3, Cons(4, Nil())))))
+    val actual = Stream.toList(Stream.takeWhile(stream)(_ < 5))
+    assertEquals(expected, actual)
