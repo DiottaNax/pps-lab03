@@ -44,6 +44,6 @@ class StreamTest:
   @Test def testCycle(): Unit =
     val sequence = Cons("a", Cons("b", Cons("c", Nil())))
     val repeat = Stream.cycle(sequence)
-    val actual = Stream.toList(Stream.take(repeat)(18))
+    val actual = Stream.toList(Stream.take(repeat)(15))
     val expected = concat(sequence, concat(sequence, concat(sequence, concat(sequence, sequence))))
     assertEquals(expected, actual)
