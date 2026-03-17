@@ -10,9 +10,9 @@ object SequencesTasks:
   import u03.Sequences.Sequence
   import u03.Sequences.Sequence.{Cons, Nil, map, sum}
 
-  /** *****************************
-   * Task1            *
-   * ***************************** */
+  /*******************************
+   *            Task1            *
+   *******************************/
 
   /*
    * Skip the first n elements of the sequence
@@ -170,9 +170,9 @@ object SequencesTasks:
 
     _partition(reverse(s), Nil(), Nil())
 
-  /** *****************************
-   * Task2            *
-   * ***************************** */
+  /*******************************
+   *            Task2            *
+   *******************************/
 
   def getCourses(s: Sequence[Person]): Sequence[String] = flatMap(s):
     case Teacher(_, c) => Cons(c, Nil())
@@ -194,9 +194,9 @@ object StreamsTasks:
   import u03.Streams.Stream
   import u03.Streams.Stream.*
 
-  /** *****************************
-   * Task3            *
-   * ***************************** */
+  /*******************************
+   *            Task3            *
+   *******************************/
 
   def takeWhile[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match
     case Cons(head, tail) if pred(head()) => cons(head(), takeWhile(tail())(pred))
