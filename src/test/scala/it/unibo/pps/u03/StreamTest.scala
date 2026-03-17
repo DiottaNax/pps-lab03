@@ -13,3 +13,9 @@ class StreamTest:
     val expected = Cons(0, Cons(1, Cons(2, Cons(3, Cons(4, Nil())))))
     val actual = Stream.toList(Stream.takeWhile(stream)(_ < 5))
     assertEquals(expected, actual)
+
+  @Test def testFill(): Unit =
+    val element = "a"
+    val expected = Cons(element, Cons(element, Cons(element, Nil())))
+    val actual = Stream.toList(Stream.fill(3)(element))
+    assertEquals(expected, actual)

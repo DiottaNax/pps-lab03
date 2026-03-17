@@ -1,7 +1,5 @@
 package u03
 
-import scala.annotation.tailrec
-
 object Streams extends App:
 
   import Sequences.*
@@ -43,6 +41,7 @@ object Streams extends App:
       case Cons(head, tail) if pred(head()) => cons(head(), takeWhile(tail())(pred))
       case _ => Empty()
 
+    def fill[A](n: Int)(element: A): Stream[A] = take(iterate(element)(_ => element))(n)
 
   end Stream
 
