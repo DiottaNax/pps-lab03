@@ -185,11 +185,10 @@ object Sequences: // Essentially, generic linkedlists
 
       _partition(reverse(s), Nil(), Nil())
 
-    def getCourses(s: Sequence[Person]): Sequence[String] = flatMap(s) {
+    def getCourses(s: Sequence[Person]): Sequence[String] = flatMap(s):
       case Teacher(_, c) => Cons(c, Nil())
       case _ => Nil()
-    }
-
+      
     def foldLeft(s: Sequence[Int])(default: Int)(mapper: (Int, Int) => Int): Int =
       @tailrec
       def _foldLeft(s: Sequence[Int], acc: Int): Int = s match
