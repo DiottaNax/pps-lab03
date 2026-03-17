@@ -48,6 +48,9 @@ object Streams extends App:
         cons(current, _fibonacci(next)(current + next))
       _fibonacci(0)(1)
 
+    def interleave[A](s1: Stream[A], s2: Stream[A]): Stream[A] = s1 match
+      case Empty() => s2
+      case Cons(head, tail) => cons(head(), interleave(s2, tail()))
 
   end Stream
 
