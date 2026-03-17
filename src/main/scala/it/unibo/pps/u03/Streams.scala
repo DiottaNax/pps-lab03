@@ -46,11 +46,25 @@ object Streams extends App:
     def fibonacci(): Stream[Int] =
       def _fibonacci(current: Int)(next: Int): Stream[Int] =
         cons(current, _fibonacci(next)(current + next))
+
       _fibonacci(0)(1)
 
     def interleave[A](s1: Stream[A], s2: Stream[A]): Stream[A] = s1 match
       case Empty() => s2
       case Cons(head, tail) => cons(head(), interleave(s2, tail()))
+
+    def fromSequence[A](s: => Sequence[A]): Stream[A] = s match
+      case Sequence.Nil() => Empty()
+      case Sequence.Cons(h, t) => cons(h, fromSequence(t))
+
+    def append[A](s1: Stream[A], s2: => Stream[A]): Stream[A] = s1 match
+      case Empty() => s2
+      case Cons(head, tail) => cons(head(), append(tail(), s2))
+
+    def cycle[A](s: Sequence[A]): Stream[A] =
+      lazy val infiniteStream: Stream[A] = Stream.append(fromSequence(s), infiniteStream)
+      infiniteStream
+
 
   end Stream
 

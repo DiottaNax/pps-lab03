@@ -2,7 +2,7 @@ package it.unibo.pps.u03
 
 import org.junit.*
 import org.junit.Assert.*
-import u03.Sequences.Sequence.{Cons, Nil}
+import u03.Sequences.Sequence.{Cons, Nil, concat}
 
 class StreamTest:
 
@@ -39,4 +39,11 @@ class StreamTest:
     val s2 = cons(2, cons(4, cons(6, empty())))
     val actual = Stream.toList(Stream.interleave(s1, s2))
     val expected = Cons(1, Cons(2, Cons(3, Cons(4, Cons(5, Cons(6, Cons(7, Cons(9, Nil()))))))))
+    assertEquals(expected, actual)
+
+  @Test def testCycle(): Unit =
+    val sequence = Cons("a", Cons("b", Cons("c", Nil())))
+    val repeat = Stream.cycle(sequence)
+    val actual = Stream.toList(Stream.take(repeat)(18))
+    val expected = concat(sequence, concat(sequence, concat(sequence, concat(sequence, sequence))))
     assertEquals(expected, actual)
